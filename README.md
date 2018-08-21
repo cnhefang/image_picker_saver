@@ -1,3 +1,28 @@
+# Image Picker and saver plugin for Flutter
+
+forked from offical plugin: https://github.com/flutter/plugins/tree/master/packages/image_picker
+
+### Save image Example
+``` dart
+
+  void _onImageSaveButtonPressed() async {
+    http.get(
+        'https://www.baidu.com/img/superlogo_c4d7df0a003d3db9b65e9ef0fe6da1ec.png')
+        .then((response) {
+      debugPrint(response.statusCode.toString());
+      ImagePicker.saveFile(fileName: "123.jpg", fileData: response.bodyBytes)
+          .then((filePath) {
+        debugPrint(filePath);
+        var saveFile = File.fromUri(Uri.file(filePath));
+        setState(() {
+          _imageFile = Future<File>.sync(() => saveFile);
+        });
+
+      });
+    });
+  }
+
+```
 # Image Picker plugin for Flutter
 
 [![pub package](https://img.shields.io/pub/v/image_picker.svg)](https://pub.dartlang.org/packages/image_picker)
