@@ -39,23 +39,22 @@ class _MyHomePageState extends State<MyHomePage> {
   VoidCallback listener;
 
   void _onImageSaveButtonPressed() async {
-    http.get('https://www.baidu.com/img/superlogo_c4d7df0a003d3db9b65e9ef0fe6da1ec.png').then((response){
-debugPrint(response.statusCode.toString());
+    http.get(
+        'https://www.baidu.com/img/superlogo_c4d7df0a003d3db9b65e9ef0fe6da1ec.png')
+        .then((response) {
+      debugPrint(response.statusCode.toString());
 
       //_imageFile = () async{return File.fromRawPath(resonse.bodyBytes);} as Future<File>;
-       ImagePicker.saveFile(fileName: "123.jpg", fileData: response.bodyBytes).then((filePath){
-         debugPrint(filePath);
-        var saveFile= File.fromUri(Uri.file(filePath));
-         setState(() {
-           _imageFile = Future<File>.sync(() => saveFile);
-         });
+      ImagePicker.saveFile(fileName: "123.jpg", fileData: response.bodyBytes)
+          .then((filePath) {
+        debugPrint(filePath);
+        var saveFile = File.fromUri(Uri.file(filePath));
+        setState(() {
+          _imageFile = Future<File>.sync(() => saveFile);
+        });
         //_imageFile=    Future.value( saveFile);
-       });
-
+      });
     });
-
-
-
   }
 
   void _onImageButtonPressed(ImageSource source) {
