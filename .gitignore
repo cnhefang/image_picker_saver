@@ -6,3 +6,5 @@ example/build
 .flutter-plugins
 .packages
 .gitkeep
+example/ios/.symlinks
+UserInterfaceState.xcuserstate

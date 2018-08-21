@@ -4,10 +4,10 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_saver/image_picker_saver.dart';
 
 void main() {
-  group('$ImagePicker', () {
+  group('$ImagePickerSaver', () {
     const MethodChannel channel =
         MethodChannel('plugins.flutter.io/image_picker');
 
@@ -24,8 +24,8 @@ void main() {
 
     group('#pickImage', () {
       test('passes the image source argument correctly', () async {
-        await ImagePicker.pickImage(source: ImageSource.camera);
-        await ImagePicker.pickImage(source: ImageSource.gallery);
+        await ImagePickerSaver.pickImage(source: ImageSource.camera);
+        await ImagePickerSaver.pickImage(source: ImageSource.gallery);
 
         expect(
           log,
@@ -45,16 +45,16 @@ void main() {
       });
 
       test('passes the width and height arguments correctly', () async {
-        await ImagePicker.pickImage(source: ImageSource.camera);
-        await ImagePicker.pickImage(
+        await ImagePickerSaver.pickImage(source: ImageSource.camera);
+        await ImagePickerSaver.pickImage(
           source: ImageSource.camera,
           maxWidth: 10.0,
         );
-        await ImagePicker.pickImage(
+        await ImagePickerSaver.pickImage(
           source: ImageSource.camera,
           maxHeight: 10.0,
         );
-        await ImagePicker.pickImage(
+        await ImagePickerSaver.pickImage(
           source: ImageSource.camera,
           maxWidth: 10.0,
           maxHeight: 20.0,
@@ -89,12 +89,12 @@ void main() {
 
       test('does not accept a negative width or height argument', () {
         expect(
-          ImagePicker.pickImage(source: ImageSource.camera, maxWidth: -1.0),
+          ImagePickerSaver.pickImage(source: ImageSource.camera, maxWidth: -1.0),
           throwsArgumentError,
         );
 
         expect(
-          ImagePicker.pickImage(source: ImageSource.camera, maxHeight: -1.0),
+          ImagePickerSaver.pickImage(source: ImageSource.camera, maxHeight: -1.0),
           throwsArgumentError,
         );
       });
@@ -103,8 +103,8 @@ void main() {
         channel.setMockMethodCallHandler((MethodCall methodCall) => null);
 
         expect(
-            await ImagePicker.pickImage(source: ImageSource.gallery), isNull);
-        expect(await ImagePicker.pickImage(source: ImageSource.camera), isNull);
+            await ImagePickerSaver.pickImage(source: ImageSource.gallery), isNull);
+        expect(await ImagePickerSaver.pickImage(source: ImageSource.camera), isNull);
       });
     });
   });

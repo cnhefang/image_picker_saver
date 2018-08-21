@@ -8,13 +8,13 @@
 #import <Photos/Photos.h>
 #import <UIKit/UIKit.h>
 
-@interface FLTImagePickerPlugin ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface FLTImagePickerSaverPlugin ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @end
 
 static const int SOURCE_CAMERA = 0;
 static const int SOURCE_GALLERY = 1;
 
-@implementation FLTImagePickerPlugin {
+@implementation FLTImagePickerSaverPlugin {
   FlutterResult _result;
   NSDictionary *_arguments;
   UIImagePickerController *_imagePickerController;

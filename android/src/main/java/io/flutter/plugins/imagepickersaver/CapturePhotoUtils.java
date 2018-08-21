@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
@@ -73,8 +74,9 @@ public class CapturePhotoUtils {
         }
 
         if (url != null) {
-            stringUrl = url.toString();
+            stringUrl = getFilePathFromContentUri(url,cr);
         }
+
 
         return stringUrl;
     }
@@ -125,5 +127,28 @@ public class CapturePhotoUtils {
         } catch (IOException ex) {
             return null;
         }
+    }
+
+    /**
+     * Gets the corresponding path to a file from the given content:// URI
+     * @param selectedVideoUri The content:// URI to find the file path from
+     * @param contentResolver The content resolver to use to perform the query.
+     * @return the file path as a string
+     */
+    public static String getFilePathFromContentUri(Uri selectedVideoUri,
+                                                   ContentResolver contentResolver) {
+        String filePath;
+        String[] filePathColumn = {MediaStore.MediaColumns.DATA};
+
+        Cursor cursor = contentResolver.query(selectedVideoUri, filePathColumn, null, null, null);
+//	    也可用下面的方法拿到cursor
+//	    Cursor cursor = this.context.managedQuery(selectedVideoUri, filePathColumn, null, null, null);
+
+        cursor.moveToFirst();
+
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        filePath = cursor.getString(columnIndex);
+        cursor.close();
+        return filePath;
     }
 }

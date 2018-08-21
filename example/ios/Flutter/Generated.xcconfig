@@ -1,8 +1,9 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/mac/development/flutter
-FLUTTER_APPLICATION_PATH=/Users/mac/Downloads/plugins-master/packages/image_picker/example
+FLUTTER_ROOT=/Users/hefang/development/flutter
+FLUTTER_APPLICATION_PATH=/Users/hefang/Documents/workspace/image_picker_saver/example
 FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_MODE=debug
 FLUTTER_BUILD_DIR=build
 SYMROOT=${SOURCE_ROOT}/../build/ios
-FLUTTER_FRAMEWORK_DIR=/Users/mac/development/flutter/bin/cache/artifacts/engine/ios
+FLUTTER_FRAMEWORK_DIR=/Users/hefang/development/flutter/bin/cache/artifacts/engine/ios
+PREVIEW_DART_2=true

@@ -17,7 +17,7 @@ enum ImageSource {
   gallery,
 }
 
-class ImagePicker {
+class ImagePickerSaver {
   static const MethodChannel _channel =
       MethodChannel('plugins.flutter.io/image_picker');
 

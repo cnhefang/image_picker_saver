@@ -6,7 +6,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_saver/image_picker_saver.dart';
 import 'package:video_player/video_player.dart';
 
 void main() {
@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
       debugPrint(response.statusCode.toString());
 
       //_imageFile = () async{return File.fromRawPath(resonse.bodyBytes);} as Future<File>;
-      ImagePicker.saveFile(fileName: "123.jpg", fileData: response.bodyBytes)
+      ImagePickerSaver.saveFile(fileName: "123.jpg", fileData: response.bodyBytes)
           .then((filePath) {
         debugPrint(filePath);
         var saveFile = File.fromUri(Uri.file(filePath));
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _controller.removeListener(listener);
       }
       if (isVideo) {
-        ImagePicker.pickVideo(source: source).then((File file) {
+        ImagePickerSaver.pickVideo(source: source).then((File file) {
           if (file != null && mounted) {
             setState(() {
               _controller = VideoPlayerController.file(file)
@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         });
       } else {
-        _imageFile = ImagePicker.pickImage(source: source);
+        _imageFile = ImagePickerSaver.pickImage(source: source);
       }
     });
   }
@@ -132,6 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.data != null) {
+            debugPrint(snapshot.data.path);
             return Image.file(snapshot.data);
           } else if (snapshot.error != null) {
             return const Text(

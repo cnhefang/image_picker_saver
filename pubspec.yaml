@@ -1,6 +1,11 @@
 name: image_picker_saver
-description:  fork form 'https://github.com/flutter/plugins/tree/master/packages/image_picker' 0.4.6
+description:
+  Image Picker and Saver plugin for Flutter
+  Android supported
+  IOS implementing
+  fork form 'https://github.com/flutter/plugins/tree/master/packages/image_picker' 0.4.6
   and add saver to save image to gallery
+
 authors:
   - Aaron Ho <cnhefang@outlook.com>
 
@@ -11,7 +16,7 @@ flutter:
   plugin:
     androidPackage: io.flutter.plugins.imagepickersaver
     iosPrefix: FLT
-    pluginClass: ImagePickerPlugin
+    pluginClass: ImagePickerSaverPlugin
 
 dependencies:
   flutter:
