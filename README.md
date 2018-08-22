@@ -1,4 +1,4 @@
-# Image Picker and aver plugin for Flutter
+# Image Picker and Saver plugin for Flutter
 
 ## Android supported
 
