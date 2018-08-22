@@ -8,3 +8,9 @@ example/build
 .gitkeep
 example/ios/.symlinks
 UserInterfaceState.xcuserstate
+example/ios/Runner.xcworkspace/xcshareddata
+example/ios/Runner.xcworkspace/xcuserdata
+example/ios/Flutter/App.framework
+example/ios/Flutter/Flutter.framework
+example/ios/Flutter/flutter_assets
+example/ios/Pods

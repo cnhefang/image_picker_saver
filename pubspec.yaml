@@ -9,7 +9,7 @@ description:
 authors:
   - Aaron Ho <cnhefang@outlook.com>
 
-homepage: https://github.com/flutter/plugins/tree/master/packages/image_picker_saver
+homepage: https://github.com/cnhefang/image_picker_saver
 version: 0.0.1
 
 flutter:

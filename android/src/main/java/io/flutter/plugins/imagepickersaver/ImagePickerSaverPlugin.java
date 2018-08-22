@@ -14,7 +14,7 @@ import java.io.File;
 
 
 public class ImagePickerSaverPlugin implements MethodChannel.MethodCallHandler {
-    private static final String CHANNEL = "plugins.flutter.io/image_picker";
+    private static final String CHANNEL = "plugins.flutter.io/image_picker_saver";
 
     private static final int SOURCE_CAMERA = 0;
     private static final int SOURCE_GALLERY = 1;
