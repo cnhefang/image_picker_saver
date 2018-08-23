@@ -1,3 +1,16 @@
+## 0.0.2
+* Android implemented,iOS implemented.
+* Removed unused parameters.
+ 
+ 
+## 0.0.1
+forked from official plugin image_picker 
+and add saver function to save image to photo gallery.
+Android implemented,iOS in developing
+
+
+
+---- The following is the official plugin description ---
 ## 0.4.6
 
 * Added support for picking remote images.
