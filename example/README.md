@@ -1,4 +1,4 @@
-# image_picker_example
+# image_picker_saver_example
 
 Demonstrates how to use the image_picker plugin.
 

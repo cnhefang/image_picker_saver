@@ -11,18 +11,12 @@ forked from official plugin: https://github.com/flutter/plugins/tree/master/pack
 
   void _onImageSaveButtonPressed() async {
     http.get(
-        'https://www.baidu.com/img/superlogo_c4d7df0a003d3db9b65e9ef0fe6da1ec.png')
+        'http://upload.art.ifeng.com/2017/0425/1493105660290.jpg')
         .then((response) {
       debugPrint(response.statusCode.toString());
-      ImagePicker.saveFile(fileName: "123.jpg", fileData: response.bodyBytes)
-          .then((filePath) {
-        debugPrint(filePath);
-        var saveFile = File.fromUri(Uri.file(filePath));
-        setState(() {
-          _imageFile = Future<File>.sync(() => saveFile);
-        });
 
-      });
+      ImagePickerSaver.saveFile(fileName: "123.jpg", fileData: response.bodyBytes);
+
     });
   }
 

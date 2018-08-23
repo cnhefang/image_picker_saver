@@ -206,8 +206,8 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 _onImageSaveButtonPressed();
               },
-              heroTag: 'video1',
-              tooltip: 'Take a Video',
+              heroTag: 'save image from url',
+              tooltip: 'save image from url',
               child: const Icon(Icons.save),
             ),
           ),
