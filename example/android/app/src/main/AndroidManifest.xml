@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.flutter.plugins.imagepickerexample">
+    package="io.flutter.plugins.imagepickersaverexample">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
