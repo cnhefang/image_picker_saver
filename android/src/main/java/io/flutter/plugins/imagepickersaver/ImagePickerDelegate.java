@@ -268,23 +268,15 @@ public class ImagePickerDelegate
       return;
     }
     byte[] fileData = methodCall.argument("fileData");
-    //String fileName = methodCall.argument("fileName");
+
     Bitmap bitmap = BitmapFactory.decodeByteArray(fileData, 0, fileData.length);
-//            BufferedImage image = ImageIO.read( new ByteArrayInputStream( fileData ) );
-//            ImageIO.write(image, "BMP", new File("filename.bmp"));
-    String filePath=CapturePhotoUtils.insertImage(activity.getContentResolver(),bitmap,"Camera","123");
-    //activity.getApplicationContext().sendBroadcast(new Intent("com.android.camera.NEW_PICTURE",   Uri.parse(filePath)));
-    //result.success(filePath);
-      finishWithSuccess(filePath);
-    //launchSaveImageFromGalleryIntent();
+
+    String filePath = CapturePhotoUtils.insertImage(activity.getContentResolver(), bitmap, "Camera", "123");
+
+    finishWithSuccess(filePath);
+
   }
-//  private void launchSaveImageFromGalleryIntent() {
-//
-//    Intent saveImageIntent = new Intent(MediaStore.AUTHORITY);
-//    //pickImageIntent.setType("image/*");
-//
-//    activity.startActivityForResult(saveImageIntent, REQUEST_EXTERNAL_IMAGE_STORAGE_PERMISSION);
-//  }
+
   private void launchPickImageFromGalleryIntent() {
 
     Intent pickImageIntent = new Intent(Intent.ACTION_GET_CONTENT);

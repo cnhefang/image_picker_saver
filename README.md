@@ -1,10 +1,15 @@
 # Image Picker and aver plugin for Flutter
 
-## Android supported
+  Android supported
 
-## IOS <font color="red">implementing</font>
+  IOS supported 8.0+
 
-forked from official plugin: https://github.com/flutter/plugins/tree/master/packages/image_picker
+forked from official plugin image_picker and add saver function to save image to photo gallery.
+
+## Installation
+click the following icon to read hwo to install this plugin.
+
+[![pub package](https://img.shields.io/pub/v/image_picker_saver.svg)](https://pub.dartlang.org/packages/image_picker_saver)
 
 ### Save image Example
 ``` dart
@@ -21,6 +26,8 @@ forked from official plugin: https://github.com/flutter/plugins/tree/master/pack
   }
 
 ```
+---- The following is the official plugin description ---
+
 # Image Picker plugin for Flutter
 
 [![pub package](https://img.shields.io/pub/v/image_picker.svg)](https://pub.dartlang.org/packages/image_picker)

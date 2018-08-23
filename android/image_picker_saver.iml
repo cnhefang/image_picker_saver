@@ -97,12 +97,14 @@
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/javaPrecompile" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/jniLibs" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/library_and_local_jars_jni" />
+      <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/lint" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/packaged-aidl" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/packaged-classes" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/packagedAssets" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/packaged_res" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/public_res" />
+      <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/publish-proguard" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/res" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/shaders" />

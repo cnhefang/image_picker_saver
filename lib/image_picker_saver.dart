@@ -19,7 +19,7 @@ enum ImageSource {
 
 class ImagePickerSaver {
   static const MethodChannel _channel =
-      MethodChannel('plugins.flutter.io/image_picker_saver');
+  MethodChannel('plugins.flutter.io/image_picker_saver');
 
   /// Returns a [File] object pointing to the image that was picked.
   ///
@@ -69,19 +69,17 @@ class ImagePickerSaver {
     );
     return path == null ? null : new File(path);
   }
+
   static void saveFile({
-    @required String fileName, @required Uint8List fileData
+    @required Uint8List fileData
   }) async {
-    assert(fileName != null &&  fileName.isNotEmpty);
     assert(fileData != null);
 
-    final String path = await _channel.invokeMethod(
+    await _channel.invokeMethod(
       'saveFile',
       <String, dynamic>{
-        'fileName': fileName,
-        'fileData':  fileData,
+        'fileData': fileData,
       },
     );
-    //return path ;
   }
 }
