@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
         .then((response) {
       debugPrint(response.statusCode.toString());
 
-      ImagePickerSaver.saveFile(fileName: "123.jpg", fileData: response.bodyBytes);
+      ImagePickerSaver.saveFile(fileData: response.bodyBytes);
 
     });
   }

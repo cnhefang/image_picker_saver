@@ -1,4 +1,4 @@
-# Image Picker and aver plugin for Flutter
+# Image Picker and Saver plugin for Flutter
 
   Android supported
 
@@ -20,13 +20,14 @@ click the following icon to read hwo to install this plugin.
         .then((response) {
       debugPrint(response.statusCode.toString());
 
-      ImagePickerSaver.saveFile(fileName: "123.jpg", fileData: response.bodyBytes);
+      ImagePickerSaver.saveFile(fileData: response.bodyBytes);
 
     });
   }
 
 ```
----- The following is the official plugin description ---
+
+#---- The following is the official plugin description ---
 
 # Image Picker plugin for Flutter
 
