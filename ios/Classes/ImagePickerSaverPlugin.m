@@ -111,9 +111,25 @@ static const int SOURCE_GALLERY = 1;
         UIImage *image=[UIImage imageWithData:fileData.data];
         
         
+        PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+        if (status == PHAuthorizationStatusRestricted) {
+            NSLog(@"not allow to access photo library");
+        } else if (status == PHAuthorizationStatusDenied) { // if user chosen"Not Allow"
+            NSLog(@"提Remind users to go to [Settings - Privacy - Photo - xxx] to open the access switch");
+        } else if (status == PHAuthorizationStatusAuthorized) { // if user chosen"Allow"
+            [self saveImage:image];
+        } else if (status == PHAuthorizationStatusNotDetermined) { // if user not chosen before
+            // Requests authorization with dialog
+            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                if (status == PHAuthorizationStatusAuthorized) { //  if user  chosen "Allow"
+                    //Save Image to Directory
+                    [self saveImage:image];
+                }
+            }];
+        }
         
-        //Save Image to Directory
-        [self saveImage:image];
+        
+       
         
         
         
@@ -125,13 +141,16 @@ static const int SOURCE_GALLERY = 1;
 }
 
 -(void)saveImage:(UIImage *)image{
-    
+    __block PHAssetChangeRequest *assetChangeRequest = nil;
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
         PHAssetChangeRequest *assetChangeRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
         //localId = [[assetChangeRequest placeholderForCreatedAsset] localIdentifier];
     } completionHandler:^(BOOL success, NSError *error) {
         
         if (success) {
+            NSLog(@"保存图片成功!");
+            //PHObjectPlaceholder *assetPlaceholder = assetChangeRequest.placeholderForCreatedAsset;
+            //NSLog(assetPlaceholder.accessibilityPath);
             //            NSLog(@"Success");
             //            PHFetchResult* assetResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[localId] options:nil];
             //            PHAsset *asset = [assetResult firstObject];
@@ -140,6 +159,7 @@ static const int SOURCE_GALLERY = 1;
             //                NSLog(@"Success PHImageFileURLKey %@  ", (NSString *)[info objectForKey:@"PHImageFileURLKey"]);
             //            }];
         } else {
+            NSLog(@"保存图片失败!");
             NSLog(@"write error : %@",error);
         }
     }];
@@ -290,5 +310,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info {
     
     return scaledImage;
 }
+
+
 
 @end

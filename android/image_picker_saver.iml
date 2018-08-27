@@ -89,6 +89,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/generated/source/apt/test/debug" isTestSource="true" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/annotations" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/attr" />
+      <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/blame" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/check-manifest" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../example/build/image_picker_saver/intermediates/extractedTypedefs" />

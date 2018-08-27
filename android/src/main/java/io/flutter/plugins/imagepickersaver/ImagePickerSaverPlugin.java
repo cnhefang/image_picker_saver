@@ -6,11 +6,13 @@ package io.flutter.plugins.imagepickersaver;
 
 import android.os.Environment;
 import android.support.annotation.VisibleForTesting;
+
+import java.io.File;
+import java.io.IOException;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.PluginRegistry;
- 
-import java.io.File;
 
 
 public class ImagePickerSaverPlugin implements MethodChannel.MethodCallHandler {
@@ -77,9 +79,13 @@ public class ImagePickerSaverPlugin implements MethodChannel.MethodCallHandler {
             }
         } else if (call.method.equals("saveFile")) {
 
-            delegate.saveImageToGallery(call, result);
 
-
+            try {
+                delegate.saveImageToGallery(call, result);
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new IllegalArgumentException(e);
+            }
 
 
         } else {

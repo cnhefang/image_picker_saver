@@ -4,6 +4,9 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker_saver/image_picker_saver.dart';
@@ -12,6 +15,8 @@ import 'package:video_player/video_player.dart';
 void main() {
   runApp(new MyApp());
 }
+
+GlobalKey globalKey = new GlobalKey();
 
 class MyApp extends StatelessWidget {
   @override
@@ -39,14 +44,27 @@ class _MyHomePageState extends State<MyHomePage> {
   VoidCallback listener;
 
   void _onImageSaveButtonPressed() async {
-    http.get(
-        'http://upload.art.ifeng.com/2017/0425/1493105660290.jpg')
+    print("_onImageSaveButtonPressed");
+    http
+        .get('http://upload.art.ifeng.com/2017/0425/1493105660290.jpg')
         .then((response) {
       debugPrint(response.statusCode.toString());
 
       ImagePickerSaver.saveFile(fileData: response.bodyBytes);
-
     });
+
+//    RenderRepaintBoundary boundary =
+//    globalKey.currentContext.findRenderObject();
+//
+//    ui.Image image = await boundary.toImage();
+//
+//    ByteData byteData = await image.toByteData(
+//        format: ui.ImageByteFormat.png);
+//
+//    //_imageFile.then((value){value =new File.});
+//    Uint8List pngBytes = byteData.buffer.asUint8List();
+//
+//    ImagePickerSaver.saveFile(fileData: pngBytes);
   }
 
   void _onImageButtonPressed(ImageSource source) {
@@ -201,16 +219,19 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 16.0),
-            child: FloatingActionButton(
-              backgroundColor: Colors.lightGreen,
-              onPressed: () {
-                _onImageSaveButtonPressed();
-              },
-              heroTag: 'save image from url',
-              tooltip: 'save image from url',
-              child: const Icon(Icons.save),
+            child: new RepaintBoundary(
+              key: globalKey,
+              child: FloatingActionButton(
+                backgroundColor: Colors.lightGreen,
+                onPressed: () {
+                  _onImageSaveButtonPressed();
+                },
+                heroTag: 'save image from url',
+                tooltip: 'save image from url',
+                child: const Icon(Icons.save),
+              ),
             ),
-          ),
+          )
         ],
       ),
     );
