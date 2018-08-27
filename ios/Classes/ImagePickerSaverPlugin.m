@@ -62,16 +62,16 @@ static const int SOURCE_GALLERY = 1;
         
         switch (imageSource) {
             case SOURCE_CAMERA:
-            [self showCamera];
-            break;
+                [self showCamera];
+                break;
             case SOURCE_GALLERY:
-            [self showPhotoLibrary];
-            break;
+                [self showPhotoLibrary];
+                break;
             default:
-            result([FlutterError errorWithCode:@"invalid_source"
-                                       message:@"Invalid image source."
-                                       details:nil]);
-            break;
+                result([FlutterError errorWithCode:@"invalid_source"
+                                           message:@"Invalid image source."
+                                           details:nil]);
+                break;
         }
     } else if ([@"pickVideo" isEqualToString:call.method]) {
         _imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -89,16 +89,16 @@ static const int SOURCE_GALLERY = 1;
         
         switch (imageSource) {
             case SOURCE_CAMERA:
-            [self showCamera];
-            break;
+                [self showCamera];
+                break;
             case SOURCE_GALLERY:
-            [self showPhotoLibrary];
-            break;
+                [self showPhotoLibrary];
+                break;
             default:
-            result([FlutterError errorWithCode:@"invalid_source"
-                                       message:@"Invalid video source."
-                                       details:nil]);
-            break;
+                result([FlutterError errorWithCode:@"invalid_source"
+                                           message:@"Invalid video source."
+                                           details:nil]);
+                break;
         }
     } else if ([@"saveFile" isEqualToString:call.method]) {
         _result = result;
@@ -109,7 +109,6 @@ static const int SOURCE_GALLERY = 1;
         NSString * fileName=@"";
         //NSLog(@"fileData.data.length  :%ul",fileData.data.length);
         UIImage *image=[UIImage imageWithData:fileData.data];
-        
         
         PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
         if (status == PHAuthorizationStatusRestricted) {
@@ -127,43 +126,49 @@ static const int SOURCE_GALLERY = 1;
                 }
             }];
         }
-        
-        
-       
-        
-        
-        
-        _result(fileName);
+        //_result(fileName);
     }
     else {
         result(FlutterMethodNotImplemented);
     }
 }
 
--(void)saveImage:(UIImage *)image{
+-(void)saveImage:(UIImage *)image  {
+    __block NSString* fileName;
+    __block NSString* localId;
     __block PHAssetChangeRequest *assetChangeRequest = nil;
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
         PHAssetChangeRequest *assetChangeRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
-        //localId = [[assetChangeRequest placeholderForCreatedAsset] localIdentifier];
+        
+        
+        // [assetCollectionChangeRequest addAssets:@[[assetChangeRequest placeholderForCreatedAsset]]];
+        
+        localId = [[assetChangeRequest placeholderForCreatedAsset] localIdentifier];
     } completionHandler:^(BOOL success, NSError *error) {
         
         if (success) {
-            NSLog(@"保存图片成功!");
-            //PHObjectPlaceholder *assetPlaceholder = assetChangeRequest.placeholderForCreatedAsset;
-            //NSLog(assetPlaceholder.accessibilityPath);
-            //            NSLog(@"Success");
-            //            PHFetchResult* assetResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[localId] options:nil];
-            //            PHAsset *asset = [assetResult firstObject];
-            //            [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
-            //                NSLog(@"Success %@ %@",dataUTI,info);
-            //                NSLog(@"Success PHImageFileURLKey %@  ", (NSString *)[info objectForKey:@"PHImageFileURLKey"]);
-            //            }];
+            NSLog(@"save image successful ");
+            PHFetchResult* assetResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[localId] options:nil];
+            PHAsset *asset = [assetResult firstObject];
+            [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
+                NSLog(@"Success %@ %@",dataUTI,info);
+                
+                NSLog(@"Success PHImageFileURLKey %@  ", (NSString *)[info objectForKey:@"PHImageFileURLKey"]);
+                fileName=((NSURL *)[info objectForKey:@"PHImageFileURLKey"]).absoluteString;
+                _result(fileName);
+            }];
+            
         } else {
-            NSLog(@"保存图片失败!");
-            NSLog(@"write error : %@",error);
+            NSLog(@"save image failed!%@",error);
+            
+            fileName= @"";
+            _result(fileName);
+            
         }
     }];
 }
+
+
 
 
 - (void)showCamera {

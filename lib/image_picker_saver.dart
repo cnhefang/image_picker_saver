@@ -73,11 +73,12 @@ class ImagePickerSaver {
   static void saveFile({@required Uint8List fileData}) async {
     assert(fileData != null);
 
-    await _channel.invokeMethod(
+    var filename =await _channel.invokeMethod(
       'saveFile',
       <String, dynamic>{
         'fileData': fileData,
       },
     );
+    debugPrint("filename:"+filename);
   }
 }
