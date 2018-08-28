@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -70,15 +71,20 @@ class ImagePickerSaver {
     return path == null ? null : new File(path);
   }
 
-  static void saveFile({@required Uint8List fileData}) async {
+  static Future<String> saveFile({@required Uint8List fileData}) async {
     assert(fileData != null);
 
-    var filename =await _channel.invokeMethod(
+    String filePath = await _channel.invokeMethod(
       'saveFile',
       <String, dynamic>{
         'fileData': fileData,
       },
     );
-    debugPrint("filename:"+filename);
+    debugPrint("saved filePath:" + filePath);
+    //process ios return filePath
+    if(filePath.startsWith("file://")){
+      filePath=filePath.replaceAll("file://", "");
+    }
+    return  filePath;
   }
 }

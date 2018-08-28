@@ -5,12 +5,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:ui' as ui;
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:image_picker_saver/image_picker_saver.dart';
 import 'package:video_player/video_player.dart';
+import 'dart:ui' as ui;
 
 void main() {
   runApp(new MyApp());
@@ -45,28 +45,33 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _onImageSaveButtonPressed() async {
     print("_onImageSaveButtonPressed");
-    http
-        .get('http://upload.art.ifeng.com/2017/0425/1493105660290.jpg')
-        .then((response) {
-      debugPrint(response.statusCode.toString());
+    var response = await http
+        .get('http://upload.art.ifeng.com/2017/0425/1493105660290.jpg');
 
-      ImagePickerSaver.saveFile(fileData: response.bodyBytes);
+    debugPrint(response.statusCode.toString());
+
+    var filePath = await ImagePickerSaver.saveFile(
+        fileData: response.bodyBytes);
+
+    var savedFile= File.fromUri(Uri.file(filePath));
+    setState(() {
+      _imageFile = Future<File>.sync(() => savedFile);
     });
-
-//    RenderRepaintBoundary boundary =
-//    globalKey.currentContext.findRenderObject();
-//
-//    ui.Image image = await boundary.toImage();
-//
-//    ByteData byteData = await image.toByteData(
-//        format: ui.ImageByteFormat.png);
-//
-//    //_imageFile.then((value){value =new File.});
-//    Uint8List pngBytes = byteData.buffer.asUint8List();
-//
-//    ImagePickerSaver.saveFile(fileData: pngBytes);
   }
+  void _takeScreenShot() async {
+    RenderRepaintBoundary boundary =
+    globalKey.currentContext.findRenderObject();
+    ui.Image image = await boundary.toImage();
 
+    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData.buffer.asUint8List();
+    print(pngBytes);
+    var filePath =await ImagePickerSaver.saveFile(fileData: pngBytes);
+    var savedFile= File.fromUri(Uri.file(filePath));
+    setState(() {
+      _imageFile = Future<File>.sync(() => savedFile);
+    });
+  }
   void _onImageButtonPressed(ImageSource source) {
     setState(() {
       if (_controller != null) {
@@ -160,81 +165,92 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: isVideo ? _previewVideo(_controller) : _previewImage(),
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          FloatingActionButton(
-            onPressed: () {
-              isVideo = false;
-              _onImageButtonPressed(ImageSource.gallery);
-            },
-            heroTag: 'image0',
-            tooltip: 'Pick Image from gallery',
-            child: const Icon(Icons.photo_library),
+    return new RepaintBoundary(
+        key: globalKey,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(widget.title),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: FloatingActionButton(
-              onPressed: () {
-                isVideo = false;
-                _onImageButtonPressed(ImageSource.camera);
-              },
-              heroTag: 'image1',
-              tooltip: 'Take a Photo',
-              child: const Icon(Icons.camera_alt),
-            ),
+          body: Center(
+            child: isVideo ? _previewVideo(_controller) : _previewImage(),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: FloatingActionButton(
-              backgroundColor: Colors.red,
-              onPressed: () {
-                isVideo = true;
-                _onImageButtonPressed(ImageSource.gallery);
-              },
-              heroTag: 'video0',
-              tooltip: 'Pick Video from gallery',
-              child: const Icon(Icons.video_library),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: FloatingActionButton(
-              backgroundColor: Colors.red,
-              onPressed: () {
-                isVideo = true;
-                _onImageButtonPressed(ImageSource.camera);
-              },
-              heroTag: 'video1',
-              tooltip: 'Take a Video',
-              child: const Icon(Icons.videocam),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: new RepaintBoundary(
-              key: globalKey,
-              child: FloatingActionButton(
-                backgroundColor: Colors.lightGreen,
+          floatingActionButton: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              FloatingActionButton(
                 onPressed: () {
-                  _onImageSaveButtonPressed();
+                  isVideo = false;
+                  _onImageButtonPressed(ImageSource.gallery);
                 },
-                heroTag: 'save image from url',
-                tooltip: 'save image from url',
-                child: const Icon(Icons.save),
+                heroTag: 'image0',
+                tooltip: 'Pick Image from gallery',
+                child: const Icon(Icons.photo_library),
               ),
-            ),
-          )
-        ],
-      ),
-    );
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    isVideo = false;
+                    _onImageButtonPressed(ImageSource.camera);
+                  },
+                  heroTag: 'image1',
+                  tooltip: 'Take a Photo',
+                  child: const Icon(Icons.camera_alt),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  onPressed: () {
+                    isVideo = true;
+                    _onImageButtonPressed(ImageSource.gallery);
+                  },
+                  heroTag: 'video0',
+                  tooltip: 'Pick Video from gallery',
+                  child: const Icon(Icons.video_library),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  onPressed: () {
+                    isVideo = true;
+                    _onImageButtonPressed(ImageSource.camera);
+                  },
+                  heroTag: 'video1',
+                  tooltip: 'Take a Video',
+                  child: const Icon(Icons.videocam),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: FloatingActionButton(
+                  backgroundColor: Colors.lightGreen,
+                  onPressed: () {
+                    _onImageSaveButtonPressed();
+                  },
+                  heroTag: 'save image from url',
+                  tooltip: 'save image from url',
+                  child: const Icon(Icons.save),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: FloatingActionButton(
+                  backgroundColor: Colors.lightGreen,
+                  onPressed: () {
+                    _takeScreenShot();
+                  },
+                  heroTag: 'ScreenShot',
+                  tooltip: 'ScreenShot',
+                  child: const Icon(Icons.mobile_screen_share),
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 }
 

@@ -51,7 +51,7 @@ public class CapturePhotoUtils {
         values.put(Images.Media.DATE_TAKEN, System.currentTimeMillis());
 
         Uri url = null;
-        String stringUrl = null;    /* value to be returned */
+        String stringUrl = "";    /* value to be returned */
 
         try {
             url = cr.insert(Images.Media.EXTERNAL_CONTENT_URI, values);
