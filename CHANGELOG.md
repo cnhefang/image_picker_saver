@@ -1,3 +1,7 @@
+## 0.1.0
+* Add return saved file path
+* Add save screenshot sample
+
 ## 0.0.2
 * Android implemented,iOS implemented.
 * Removed unused parameters.

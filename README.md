@@ -14,16 +14,21 @@ click the pub version icon to read hwo to install this plugin.
 ### Save image Example
 ``` dart
 
-  void _onImageSaveButtonPressed() async {
-    http.get(
-        'http://upload.art.ifeng.com/2017/0425/1493105660290.jpg')
-        .then((response) {
+    void _onImageSaveButtonPressed() async {
+      print("_onImageSaveButtonPressed");
+      var response = await http
+          .get('http://upload.art.ifeng.com/2017/0425/1493105660290.jpg');
+  
       debugPrint(response.statusCode.toString());
-
-      ImagePickerSaver.saveFile(fileData: response.bodyBytes);
-
-    });
-  }
+  
+      var filePath = await ImagePickerSaver.saveFile(
+          fileData: response.bodyBytes);
+  
+      var savedFile= File.fromUri(Uri.file(filePath));
+      setState(() {
+        _imageFile = Future<File>.sync(() => savedFile);
+      });
+    }
 
 ```
 
