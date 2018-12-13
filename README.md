@@ -13,6 +13,8 @@ click the pub version icon to read hwo to install this plugin.
 
 ### Save image Example
 ``` dart
+    import 'package:image_picker_saver/image_picker_saver.dart';
+
 
     void _onImageSaveButtonPressed() async {
       print("_onImageSaveButtonPressed");
