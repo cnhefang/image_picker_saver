@@ -24,7 +24,7 @@ static const int SOURCE_GALLERY = 1;
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
     FlutterMethodChannel *channel =
-    [FlutterMethodChannel methodChannelWithName:@"plugins.flutter.io/image_picker_saver"
+    [FlutterMethodChannel methodChannelWithName:@"mastercarl.com/image_saver"
                                 binaryMessenger:[registrar messenger]];
     UIViewController *viewController =
     [UIApplication sharedApplication].delegate.window.rootViewController;
@@ -50,57 +50,7 @@ static const int SOURCE_GALLERY = 1;
         _result = nil;
     }
     
-    if ([@"pickImage" isEqualToString:call.method]) {
-        _imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        _imagePickerController.delegate = self;
-        _imagePickerController.mediaTypes = @[ (NSString *)kUTTypeImage ];
-        
-        _result = result;
-        _arguments = call.arguments;
-        
-        int imageSource = [[_arguments objectForKey:@"source"] intValue];
-        
-        switch (imageSource) {
-            case SOURCE_CAMERA:
-                [self showCamera];
-                break;
-            case SOURCE_GALLERY:
-                [self showPhotoLibrary];
-                break;
-            default:
-                result([FlutterError errorWithCode:@"invalid_source"
-                                           message:@"Invalid image source."
-                                           details:nil]);
-                break;
-        }
-    } else if ([@"pickVideo" isEqualToString:call.method]) {
-        _imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        _imagePickerController.delegate = self;
-        _imagePickerController.mediaTypes = @[
-                                              (NSString *)kUTTypeMovie, (NSString *)kUTTypeAVIMovie, (NSString *)kUTTypeVideo,
-                                              (NSString *)kUTTypeMPEG4
-                                              ];
-        _imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
-        
-        _result = result;
-        _arguments = call.arguments;
-        
-        int imageSource = [[_arguments objectForKey:@"source"] intValue];
-        
-        switch (imageSource) {
-            case SOURCE_CAMERA:
-                [self showCamera];
-                break;
-            case SOURCE_GALLERY:
-                [self showPhotoLibrary];
-                break;
-            default:
-                result([FlutterError errorWithCode:@"invalid_source"
-                                           message:@"Invalid video source."
-                                           details:nil]);
-                break;
-        }
-    } else if ([@"saveFile" isEqualToString:call.method]) {
+    if ([@"saveFile" isEqualToString:call.method]) {
         _result = result;
         _arguments = call.arguments;
         
@@ -171,85 +121,8 @@ static const int SOURCE_GALLERY = 1;
 
 
 
-- (void)showCamera {
-    // Camera is not available on simulators
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        _imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-        [_viewController presentViewController:_imagePickerController animated:YES completion:nil];
-    } else {
-        [[[UIAlertView alloc] initWithTitle:@"Error"
-                                    message:@"Camera not available."
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil] show];
-    }
-}
 
-- (void)showPhotoLibrary {
-    // No need to check if SourceType is available. It always is.
-    _imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    [_viewController presentViewController:_imagePickerController animated:YES completion:nil];
-}
 
-- (void)imagePickerController:(UIImagePickerController *)picker
-didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info {
-    NSURL *videoURL = [info objectForKey:UIImagePickerControllerMediaURL];
-    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
-    [_imagePickerController dismissViewControllerAnimated:YES completion:nil];
-    
-    if (videoURL != nil) {
-        NSData *data = [NSData dataWithContentsOfURL:videoURL];
-        NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
-        NSString *tmpFile = [NSString stringWithFormat:@"image_picker_saver_%@.MOV", guid];
-        NSString *tmpDirectory = NSTemporaryDirectory();
-        NSString *tmpPath = [tmpDirectory stringByAppendingPathComponent:tmpFile];
-        
-        if ([[NSFileManager defaultManager] createFileAtPath:tmpPath contents:data attributes:nil]) {
-            _result(tmpPath);
-        } else {
-            _result([FlutterError errorWithCode:@"create_error"
-                                        message:@"Temporary file could not be created"
-                                        details:nil]);
-        }
-    } else {
-        if (image == nil) {
-            image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        }
-        image = [self normalizedImage:image];
-        
-        NSNumber *maxWidth = [_arguments objectForKey:@"maxWidth"];
-        NSNumber *maxHeight = [_arguments objectForKey:@"maxHeight"];
-        
-        if (maxWidth != (id)[NSNull null] || maxHeight != (id)[NSNull null]) {
-            image = [self scaledImage:image maxWidth:maxWidth maxHeight:maxHeight];
-        }
-        
-        NSData *data = UIImageJPEGRepresentation(image, 1.0);
-        NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
-        NSString *tmpFile = [NSString stringWithFormat:@"image_picker_saver_%@.jpg", guid];
-        NSString *tmpDirectory = NSTemporaryDirectory();
-        NSString *tmpPath = [tmpDirectory stringByAppendingPathComponent:tmpFile];
-        
-        if ([[NSFileManager defaultManager] createFileAtPath:tmpPath contents:data attributes:nil]) {
-            _result(tmpPath);
-        } else {
-            _result([FlutterError errorWithCode:@"create_error"
-                                        message:@"Temporary file could not be created"
-                                        details:nil]);
-        }
-    }
-    
-    _result = nil;
-    _arguments = nil;
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [_imagePickerController dismissViewControllerAnimated:YES completion:nil];
-    _result(nil);
-    
-    _result = nil;
-    _arguments = nil;
-}
 
 // The way we save images to the tmp dir currently throws away all EXIF data
 // (including the orientation of the image). That means, pics taken in portrait

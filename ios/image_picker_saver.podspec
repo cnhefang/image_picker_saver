@@ -2,9 +2,9 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
 Pod::Spec.new do |s|
-  s.name             = 'image_picker_saver'
+  s.name             = 'image_saver'
   s.version          = '0.0.1'
-  s.summary          = 'Flutter plugin that shows an image picker and save image to photo library.'
+  s.summary          = 'Flutter plugin that saves images to the photo library.'
   s.description      = <<-DESC
 Flutter plugin that shows an image picker.
                        DESC

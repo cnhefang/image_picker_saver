@@ -16,7 +16,7 @@ import io.flutter.plugin.common.PluginRegistry;
 
 
 public class ImagePickerSaverPlugin implements MethodChannel.MethodCallHandler {
-    private static final String CHANNEL = "plugins.flutter.io/image_picker_saver";
+    private static final String CHANNEL = "mastercarl.com/image_saver";
 
     private static final int SOURCE_CAMERA = 0;
     private static final int SOURCE_GALLERY = 1;
@@ -53,31 +53,7 @@ public class ImagePickerSaverPlugin implements MethodChannel.MethodCallHandler {
             result.error("no_activity", "image_picker plugin requires a foreground activity.", null);
             return;
         }
-        if (call.method.equals("pickImage")) {
-            int imageSource = call.argument("source");
-            switch (imageSource) {
-                case SOURCE_GALLERY:
-                    delegate.chooseImageFromGallery(call, result);
-                    break;
-                case SOURCE_CAMERA:
-                    delegate.takeImageWithCamera(call, result);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid image source: " + imageSource);
-            }
-        } else if (call.method.equals("pickVideo")) {
-            int imageSource = call.argument("source");
-            switch (imageSource) {
-                case SOURCE_GALLERY:
-                    delegate.chooseVideoFromGallery(call, result);
-                    break;
-                case SOURCE_CAMERA:
-                    delegate.takeVideoWithCamera(call, result);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid video source: " + imageSource);
-            }
-        } else if (call.method.equals("saveFile")) {
+        if (call.method.equals("saveFile")) {
 
 
             try {
