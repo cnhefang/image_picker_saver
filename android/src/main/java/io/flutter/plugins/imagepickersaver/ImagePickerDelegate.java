@@ -282,7 +282,11 @@ public class ImagePickerDelegate
 
         //Bitmap bitmap = BitmapFactory.decodeByteArray(fileData, 0, fileData.length);
 
-        String filePath = CapturePhotoUtils.insertImage(activity.getContentResolver(), fileData, "Camera", "123");
+        String title = methodCall.argument("title") == null? "Camera": methodCall.argument("title").toString();
+
+        String desctiption = methodCall.argument("description") == null? "123": methodCall.argument("description").toString();
+
+        String filePath = CapturePhotoUtils.insertImage(activity.getContentResolver(), fileData, title, desctiption);
 
         finishWithSuccess(filePath);
 
