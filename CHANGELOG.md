@@ -1,3 +1,6 @@
+## 0.2.0
+* Added title and description as a parameter
+
 ## 0.1.0
 * Add return saved file path
 * Add save screenshot sample
