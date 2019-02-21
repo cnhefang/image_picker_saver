@@ -1,9 +1,7 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/hefang/development/flutter
-FLUTTER_APPLICATION_PATH=/Users/hefang/Documents/workspace/image_picker_saver/example
-FLUTTER_TARGET=/Users/hefang/Documents/workspace/image_picker_saver/example/lib/main.dart
-FLUTTER_BUILD_MODE=debug
+FLUTTER_ROOT=/home/nadia/flutter
+FLUTTER_APPLICATION_PATH=/home/nadia/AndroidStudioProjects/image_picker_saver/example
+FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_DIR=build
 SYMROOT=${SOURCE_ROOT}/../build/ios
-FLUTTER_FRAMEWORK_DIR=/Users/hefang/development/flutter/bin/cache/artifacts/engine/ios
-PREVIEW_DART_2=true
+FLUTTER_FRAMEWORK_DIR=/home/nadia/flutter/bin/cache/artifacts/engine/ios
