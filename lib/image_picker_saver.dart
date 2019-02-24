@@ -71,13 +71,15 @@ class ImagePickerSaver {
     return path == null ? null : new File(path);
   }
 
-  static Future<String> saveFile({@required Uint8List fileData}) async {
+  static Future<String> saveFile({@required Uint8List fileData, String title, String description}) async {
     assert(fileData != null);
 
     String filePath = await _channel.invokeMethod(
       'saveFile',
       <String, dynamic>{
         'fileData': fileData,
+        'title': title,
+        'description': description
       },
     );
     debugPrint("saved filePath:" + filePath);
