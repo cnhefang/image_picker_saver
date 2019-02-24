@@ -51,7 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
     debugPrint(response.statusCode.toString());
 
     var filePath = await ImagePickerSaver.saveFile(
-        fileData: response.bodyBytes);
+        fileData: response.bodyBytes, title: 'ImagePickerPicture',
+        description: 'example of image picker saver');
 
     var savedFile= File.fromUri(Uri.file(filePath));
     setState(() {
