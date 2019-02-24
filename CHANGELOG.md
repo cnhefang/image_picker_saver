@@ -1,3 +1,10 @@
+## 0.3.0
+* **Breaking change** Migrate to AndroidX on android support library. 
+If you are using the android support library and you want to use that version, you should migrate to Androidx your project. 
+
+## 0.2.0
+* Added title and description as a parameter
+
 ## 0.1.0
 * Add return saved file path
 * Add save screenshot sample

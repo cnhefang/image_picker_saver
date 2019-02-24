@@ -5,11 +5,11 @@
 package io.flutter.plugins.imagepickersaver;
 
 import android.os.Environment;
-import android.support.annotation.VisibleForTesting;
 
 import java.io.File;
 import java.io.IOException;
 
+import androidx.annotation.VisibleForTesting;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.PluginRegistry;
