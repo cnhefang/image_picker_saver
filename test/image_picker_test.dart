@@ -9,7 +9,7 @@ import 'package:image_picker_saver/image_picker_saver.dart';
 void main() {
   group('$ImagePickerSaver', () {
     const MethodChannel channel =
-        MethodChannel('plugins.flutter.io/image_picker');
+        MethodChannel('plugins.flutter.io/image_picker_saver');
 
     final List<MethodCall> log = <MethodCall>[];
 

@@ -1,7 +1,7 @@
 name: image_picker_saver
 description:
   Image Picker and Saver plugin for Flutter
-  Android supported
+  Android X supported
   IOS supported 8.0+
   fork form official plugin image_picker' 0.4.6
   and add saver to save image to gallery
