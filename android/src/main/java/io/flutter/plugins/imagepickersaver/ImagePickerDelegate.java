@@ -76,6 +76,8 @@ public class ImagePickerDelegate
     @VisibleForTesting
     static final int REQUEST_CAMERA_IMAGE_PERMISSION = 2345;
     @VisibleForTesting
+    static final int REQUEST_EXTERNAL_IMAGE_STORAGE_PERMISSION_TO_SAVE = 2346;
+    @VisibleForTesting
     static final int REQUEST_CODE_CHOOSE_VIDEO_FROM_GALLERY = 2352;
     @VisibleForTesting
     static final int REQUEST_CODE_TAKE_VIDEO_WITH_CAMERA = 2353;
@@ -275,12 +277,16 @@ public class ImagePickerDelegate
 
         if (!permissionManager.isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             permissionManager.askForPermission(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_EXTERNAL_IMAGE_STORAGE_PERMISSION);
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_EXTERNAL_IMAGE_STORAGE_PERMISSION_TO_SAVE);
             return;
         }
-        byte[] fileData = methodCall.argument("fileData");
 
-        //Bitmap bitmap = BitmapFactory.decodeByteArray(fileData, 0, fileData.length);
+        this.saveImageToGalleryResult();
+    }
+
+    private void saveImageToGalleryResult() throws IOException {
+
+        byte[] fileData = methodCall.argument("fileData");
 
         String title = methodCall.argument("title") == null? "Camera": methodCall.argument("title").toString();
 
@@ -289,7 +295,6 @@ public class ImagePickerDelegate
         String filePath = CapturePhotoUtils.insertImage(activity.getContentResolver(), fileData, title, desctiption);
 
         finishWithSuccess(filePath);
-
     }
 
     private void launchPickImageFromGalleryIntent() {
@@ -378,6 +383,15 @@ public class ImagePickerDelegate
             case REQUEST_EXTERNAL_IMAGE_STORAGE_PERMISSION:
                 if (permissionGranted) {
                     launchPickImageFromGalleryIntent();
+                }
+                break;
+            case REQUEST_EXTERNAL_IMAGE_STORAGE_PERMISSION_TO_SAVE:
+                if (permissionGranted) {
+                    try {
+                        saveImageToGalleryResult();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
                 break;
             case REQUEST_EXTERNAL_VIDEO_STORAGE_PERMISSION:
