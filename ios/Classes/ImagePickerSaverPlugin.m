@@ -150,13 +150,21 @@ static const int SOURCE_GALLERY = 1;
             NSLog(@"save image successful ");
             PHFetchResult* assetResult = [PHAsset fetchAssetsWithLocalIdentifiers:@[localId] options:nil];
             PHAsset *asset = [assetResult firstObject];
-            [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
-                NSLog(@"Success %@ %@",dataUTI,info);
-                
-                NSLog(@"Success PHImageFileURLKey %@  ", (NSString *)[info objectForKey:@"PHImageFileURLKey"]);
-                fileName=((NSURL *)[info objectForKey:@"PHImageFileURLKey"]).absoluteString;
-                _result(fileName);
-            }];
+            
+            if (@available(iOS 13.0, *)) {
+                [asset requestContentEditingInputWithOptions:nil completionHandler:^(PHContentEditingInput * _Nullable contentEditingInput, NSDictionary * _Nonnull info) {
+                    fileName= contentEditingInput.fullSizeImageURL.absoluteString;
+                    _result(fileName);
+                }];
+            } else {
+                [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
+                    NSLog(@"Success %@ %@",dataUTI,info);
+                    
+                    NSLog(@"Success PHImageFileURLKey %@  ", (NSString *)[info objectForKey:@"PHImageFileURLKey"]);
+                    fileName=((NSURL *)[info objectForKey:@"PHImageFileURLKey"]).absoluteString;
+                    _result(fileName);
+                }];
+            }
             
         } else {
             NSLog(@"save image failed!%@",error);
