@@ -28,7 +28,7 @@ public class ImagePickerSaverPlugin implements MethodChannel.MethodCallHandler {
         final MethodChannel channel = new MethodChannel(registrar.messenger(), CHANNEL);
 
         final File externalFilesDirectory =
-                registrar.activity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                registrar.activity().getExternalFilesDir(Environment. DIRECTORY_DCIM);
         final ExifDataCopier exifDataCopier = new ExifDataCopier();
         final ImageResizer imageResizer = new ImageResizer(externalFilesDirectory, exifDataCopier);
 

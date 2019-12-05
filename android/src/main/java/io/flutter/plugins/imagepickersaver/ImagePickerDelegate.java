@@ -11,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 
 import java.io.File;
@@ -21,6 +23,7 @@ import java.util.UUID;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.PluginRegistry;
@@ -96,6 +99,7 @@ public class ImagePickerDelegate
     private final IntentResolver intentResolver;
     private final FileUriResolver fileUriResolver;
     private final FileUtils fileUtils;
+    private Handler uiThreadHandler = new Handler(Looper.getMainLooper());
 
     interface PermissionManager {
         boolean isPermissionGranted(String permissionName);
@@ -240,7 +244,7 @@ public class ImagePickerDelegate
         boolean canTakePhotos = intentResolver.resolveActivity(intent);
 
         if (!canTakePhotos) {
-            finishWithError("no_available_camera", "No cameras available for taking pictures.");
+            finishWithError("no_available_camera", "No cameras available for taking pictures.",pendingResult);
             return;
         }
 
@@ -288,13 +292,13 @@ public class ImagePickerDelegate
 
         byte[] fileData = methodCall.argument("fileData");
 
-        String title = methodCall.argument("title") == null? "Camera": methodCall.argument("title").toString();
+        String title = methodCall.argument("title") == null ? "Camera" : methodCall.argument("title").toString();
 
-        String desctiption = methodCall.argument("description") == null? "123": methodCall.argument("description").toString();
+        String desctiption = methodCall.argument("description") == null ? "123" : methodCall.argument("description").toString();
 
         String filePath = CapturePhotoUtils.insertImage(activity.getContentResolver(), fileData, title, desctiption);
 
-        finishWithSuccess(filePath);
+        finishWithSuccess(filePath,pendingResult);
     }
 
     private void launchPickImageFromGalleryIntent() {
@@ -325,7 +329,7 @@ public class ImagePickerDelegate
         boolean canTakePhotos = intentResolver.resolveActivity(intent);
 
         if (!canTakePhotos) {
-            finishWithError("no_available_camera", "No cameras available for taking pictures.");
+            finishWithError("no_available_camera", "No cameras available for taking pictures.",pendingResult);
             return;
         }
 
@@ -414,7 +418,7 @@ public class ImagePickerDelegate
         }
 
         if (!permissionGranted) {
-            finishWithSuccess(null);
+            finishWithSuccess(null,pendingResult);
         }
 
         return true;
@@ -450,7 +454,7 @@ public class ImagePickerDelegate
         }
 
         // User cancelled choosing a picture.
-        finishWithSuccess(null);
+        finishWithSuccess(null,pendingResult);
     }
 
     private void handleChooseVideoResult(int resultCode, Intent data) {
@@ -461,7 +465,7 @@ public class ImagePickerDelegate
         }
 
         // User cancelled choosing a picture.
-        finishWithSuccess(null);
+        finishWithSuccess(null,pendingResult);
     }
 
     private void handleCaptureImageResult(int resultCode) {
@@ -478,7 +482,7 @@ public class ImagePickerDelegate
         }
 
         // User cancelled taking a picture.
-        finishWithSuccess(null);
+        finishWithSuccess(null,pendingResult);
     }
 
     private void handleCaptureVideoResult(int resultCode) {
@@ -495,7 +499,7 @@ public class ImagePickerDelegate
         }
 
         // User cancelled taking a picture.
-        finishWithSuccess(null);
+        finishWithSuccess(null,pendingResult);
     }
 
     private void handleImageResult(String path) {
@@ -504,7 +508,7 @@ public class ImagePickerDelegate
             Double maxHeight = methodCall.argument("maxHeight");
 
             String finalImagePath = imageResizer.resizeImageIfNeeded(path, maxWidth, maxHeight);
-            finishWithSuccess(finalImagePath);
+            finishWithSuccess(finalImagePath,pendingResult);
         } else {
             throw new IllegalStateException("Received image from picker that was not requested");
         }
@@ -512,7 +516,7 @@ public class ImagePickerDelegate
 
     private void handleVideoResult(String path) {
         if (pendingResult != null) {
-            finishWithSuccess(path);
+            finishWithSuccess(path,pendingResult);
         } else {
             throw new IllegalStateException("Received video from picker that was not requested");
         }
@@ -529,17 +533,28 @@ public class ImagePickerDelegate
         return true;
     }
 
-    private void finishWithSuccess(String imagePath) {
-        pendingResult.success(imagePath);
+    private void finishWithSuccess(final String imagePath, final MethodChannel.Result result) {
+
+        uiThreadHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                result.success(imagePath);
+            }
+        });
         clearMethodCallAndResult();
     }
 
     private void finishWithAlreadyActiveError() {
-        finishWithError("already_active", "Image picker is already active");
+        finishWithError("already_active", "Image picker is already active", pendingResult);
     }
 
-    private void finishWithError(String errorCode, String errorMessage) {
-        pendingResult.error(errorCode, errorMessage, null);
+    private void finishWithError(final String errorCode, final String errorMessage, final MethodChannel.Result result) {
+        uiThreadHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                result.error(errorCode, errorMessage, null);
+            }
+        });
         clearMethodCallAndResult();
     }
 
