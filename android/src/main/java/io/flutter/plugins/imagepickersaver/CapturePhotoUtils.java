@@ -127,6 +127,7 @@ public class CapturePhotoUtils {
         values.put(Images.Thumbnails.WIDTH, thumb.getWidth());
 
         Uri url = cr.insert(Images.Thumbnails.EXTERNAL_CONTENT_URI, values);
+        if (url == null) return null;
 
         try {
             OutputStream thumbOut = cr.openOutputStream(url);
